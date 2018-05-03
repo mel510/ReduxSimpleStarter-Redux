@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { selectBook } from '../actions/index';
+import { bindActionCreators } from 'redux';
 
 // Container ("smart") components have direct connection to Redux store
 // Generally most parent component(s) that cares about state
@@ -8,7 +10,12 @@ class BookList extends Component {
   renderList() {
     return this.props.books.map((book) => {
       return (
-        <li key={book.title} className='list-group-item'>{book.title}</li>
+        <li
+          onClick={() => this.props.selectBook(book)}
+          key={book.title}
+          className='list-group-item'>
+            {book.title}
+        </li>
       );
     });
   }
@@ -30,5 +37,11 @@ function mapStateToProps(state) {
   };
 }
 
-// connect takes function and component and produces a container
-export default connect(mapStateToProps)(BookList);
+function mapDispatchToProps(dispatch) {
+  // assigns Action Creator to container's prop
+  // result is dispatched to all reducers via bind
+  return bindActionCreators({ selectBook: selectBook }, dispatch)
+}
+
+// connect takes function(s) and component and produces a container (upgraded from dumb component)
+export default connect(mapStateToProps, mapDispatchToProps)(BookList);
