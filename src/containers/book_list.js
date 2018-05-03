@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 // Container ("smart") components have direct connection to Redux store
 // Generally most parent component(s) that cares about state
@@ -21,5 +22,13 @@ class BookList extends Component {
   }
 }
 
+function mapStateToProps(state) {
+  // takes application state and assigns to component's props
+  // reruns whenever state changes
+  return {
+    books: state.books
+  };
+}
 
-export default BookList;
+// connect takes function and component and produces a container
+export default connect(mapStateToProps)(BookList);
